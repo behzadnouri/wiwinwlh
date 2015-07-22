@@ -3251,8 +3251,10 @@ normal form before invoking catch. The ``strictCatch`` is not provided by
 standard library but has a simple implementation in terms of ``deepseq``.
 
 ```haskell
+import Control.DeepSeq (NFData, force)
+
 strictCatch :: (NFData a, Exception e) => IO a -> (e -> IO a) -> IO a
-strictCatch = catch . (toNF =<<)
+strictCatch = catch . (force <$>)
 ```
 
 Exceptions
